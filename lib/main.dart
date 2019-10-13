@@ -2,6 +2,8 @@ import 'package:badges/badges.dart';
 import 'package:enote/DetailPage.dart';
 import 'package:enote/model/Lesson.dart';
 import 'package:enote/model/Menu.dart';
+import 'package:enote/model/Suggestion.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -25,119 +27,72 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Goal Settings'),
+      home: SelfDrvn(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double appBarHeight = 300.0;
+  @override
+  // ignore: missing_return
+  Widget build(BuildContext context) {}
+}
 
+class SelfDrvn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    print('size = ' + size.height.toString() + " " + size.width.toString());
 
-    Column title = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("Hello", style: TextStyle(color: Colors.white)),
-        Text(
-          "Federico Julian Teddy",
-          style: TextStyle(fontSize: 25, color: Colors.white,fontWeight: FontWeight.bold),
-        ),
-        Text("Rockstar", style: TextStyle(color: Colors.white))
-      ],
-    );
-
-    List<Menu> getMenu() {
+    List<Suggestion> getListSuggestion() {
       return [
-        Menu(title: "Quest", iconData: Icons.mic),
-        Menu(title: "Survey", iconData: Icons.access_alarm),
-        Menu(title: "Quiz", iconData: Icons.accessibility),
-        Menu(title: "Adhoc", iconData: Icons.cake),
-        Menu(title: "Recognize", iconData: Icons.call),
-        Menu(title: "MIB", iconData: Icons.star),
-        Menu(title: "Redemption", iconData: Icons.redeem),
-        Menu(title: "More", iconData: Icons.more_horiz)
+        Suggestion(title:"Request Feedback!",description: "This description should have character limit",imageUrl: "images/working.jpg"),
+        Suggestion(title:"Movie Night",description: "Joker Thinks It’s Saying Something, But Acts More Like a Class Clown",imageUrl: "images/joker.jpg"),
+        Suggestion(title:"More Learning!",description: "Yesterday I was clever, so I changed the world",imageUrl: "images/learning.jpg"),
+        Suggestion(title:"Lets Trip 2019!",description: "A journey is best measured in friends, rather than miles.",imageUrl: "images/team.jpg"),
+        Suggestion(title:"Get Job Done!",description: "Success is how high you bounce when you hit bottom",imageUrl: "images/success.jpg"),
+        Suggestion(title:"Request Feedback!",description: "This description should have character limit",imageUrl: "images/working.jpg"),
+        Suggestion(title:"Movie Night",description: "Joker Thinks It’s Saying Something, But Acts More Like a Class Clown",imageUrl: "images/joker.jpg"),
+        Suggestion(title:"More Learning!",description: "Yesterday I was clever, so I changed the world",imageUrl: "images/learning.jpg"),
       ];
     }
+    List listItemSuggestion = getListSuggestion();
 
-    List<Menu> menu = getMenu();
 
-    List<Widget> menuItem = List<Widget>();
-    for (var list in menu) {
-      menuItem.add(Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Badge(
-            badgeContent: Text('20',style: TextStyle(color: Colors.white)),
-            child: ClipOval(
-              child: Material(
-                color: Color.fromARGB(255, 67, 167, 180), // button color
-                child: InkWell(
-                  splashColor: Colors.transparent, // inkwell color
-                  child: SizedBox(
-                      width: 56,
-                      height: 56,
-                      child: Icon(list.iconData, color: Colors.white)),
-                  onTap: () {
-                    Fluttertoast.showToast(
-                        msg: list.title,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIos: 2,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  },
-                ),
+    void _showDialog() {
+      // flutter defined function
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return CupertinoAlertDialog(
+            title: new Text("Logout"),
+            content: new Text("Are you sure want to logout?"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+
+              new FlatButton(
+                child: new Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-            ),
-          ),
-
-          Padding(padding: EdgeInsets.only(top: 5.0)),
-          Text(list.title)
-        ],
-      ));
+              new FlatButton(
+                child: new Text("Logout"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
     }
-
-    Card listSuggestion() => Card(
-          elevation: 8,
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
-            width: 300,
-            height: 200,
-            decoration: BoxDecoration(
-                borderRadius: new BorderRadius.circular(10),
-                image: DecorationImage(
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.2), BlendMode.dstIn),
-                  image: AssetImage("images/background.jpg"),
-                  fit: BoxFit.cover,
-                )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              verticalDirection: VerticalDirection.up,
-              children: <Widget>[
-                Text("This description should have characted limit"),
-                Padding(padding: EdgeInsets.only(top: 10.0)),
-                Text("New Item Added!",
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ),
-        );
 
     final makeBottom = Container(
       height: 55.0,
@@ -151,8 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {},
             ),
             Badge(
-              badgeContent: Text('2',style: TextStyle(color: Colors.white)),
-              child:  IconButton(
+              badgeContent: Text('2', style: TextStyle(color: Colors.white)),
+              child: IconButton(
                 icon: Icon(Icons.blur_on, color: Colors.white),
                 onPressed: () {},
               ),
@@ -170,158 +125,305 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
+    Card listSuggestion(Suggestion suggestion) => Card(
+        elevation: 2,
+        child: Container(
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+          width: 300,
+          height: 200,
+          decoration: BoxDecoration(
+              borderRadius: new BorderRadius.circular(5),
+              gradient: LinearGradient(
+                begin: FractionalOffset.topCenter, end: FractionalOffset.bottomCenter,
+                colors: [
+                  Colors.white,
+                  Colors.black
+                ]
+              ),
+              image: DecorationImage(
+                colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.6), BlendMode.dstIn),
+                image: AssetImage(suggestion.imageUrl),
+                fit: BoxFit.cover,
+              )),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            verticalDirection: VerticalDirection.up,
+            children: <Widget>[
+              Text(
+                suggestion.description,
+                style: TextStyle(color: Colors.white),
+              ),
+              Padding(padding: EdgeInsets.only(top: 10.0)),
+              Text(suggestion.title,
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+            ],
+          ),
+        ));
 
-    return new Stack(
-      children: <Widget>[
-        new Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  backgroundColor: Color.fromARGB(255, 67, 167, 180),
-                  expandedHeight: 230.0,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Text("",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        )),
-                    background: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              colorFilter: new ColorFilter.mode(
-                                  Colors.black.withOpacity(0.2),
-                                  BlendMode.dstIn),
-                              image: AssetImage("images/background.png"),
-                              fit: BoxFit.cover)),
-                    ),
-                    collapseMode: CollapseMode.parallax,
+
+    List<Menu> getMenuSettings() {
+      return [
+        Menu(title: "Languages", iconData: Icons.language, badgeCount: ''),
+        Menu(title: "Report", iconData: Icons.report, badgeCount: ''),
+        Menu(title: "FAQ", iconData: Icons.feedback, badgeCount: ''),
+        Menu(title: "Sign Out", iconData: Icons.close, badgeCount: '')
+      ];
+    }
+
+    List<Menu> menuSettings = getMenuSettings();
+    List<Widget> listMenuSettings = List<Widget>();
+    for (var list in menuSettings) {
+      listMenuSettings.add(Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Badge(
+            badgeContent:
+                Text(list.badgeCount, style: TextStyle(color: Colors.white)),
+            showBadge: list.badgeCount != "" ? true : false,
+            child: ClipOval(
+              child: Material(
+                color: Color.fromARGB(255, 67, 167, 180), // button color
+                child: InkWell(
+                  splashColor: Colors.transparent, // inkwell color
+                  child: SizedBox(
+                    width: 56,
+                    height: 56,
+                    child: Icon(list.iconData, color: Colors.white),
+                  ),
+                  onTap: () {
+                    if (list.title == "Sign Out") {
+                      _showDialog();
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 5.0)),
+          Text(list.title)
+        ],
+      ));
+    }
+
+    List<Menu> getMenuDashboard() {
+      return [
+        Menu(title: "Quest", iconData: Icons.mic, badgeCount: '20'),
+        Menu(title: "Survey", iconData: Icons.access_alarm, badgeCount: ''),
+        Menu(title: "Quiz", iconData: Icons.accessibility, badgeCount: ''),
+        Menu(title: "Adhoc", iconData: Icons.cake, badgeCount: ''),
+        Menu(title: "Recognize", iconData: Icons.call, badgeCount: ''),
+        Menu(title: "MIB", iconData: Icons.star, badgeCount: '20'),
+        Menu(title: "Redemp", iconData: Icons.redeem, badgeCount: ''),
+        Menu(title: "More", iconData: Icons.more_horiz, badgeCount: '')
+      ];
+    }
+
+    List<Menu> menuDashboard = getMenuDashboard();
+    List<Widget> listMenuDashboard = List<Widget>();
+    for (var list in menuDashboard) {
+      listMenuDashboard.add(Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Badge(
+            badgeContent:
+                Text(list.badgeCount, style: TextStyle(color: Colors.white)),
+            showBadge: list.badgeCount != "" ? true : false,
+            child: ClipOval(
+              child: Material(
+                color: Color.fromARGB(255, 67, 167, 180), // button color
+                child: InkWell(
+                  splashColor: Colors.transparent, // inkwell color
+                  child: SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: Icon(list.iconData, color: Colors.white)),
+                  onTap: () {
+                    if (list.title != "More") {
+                      Fluttertoast.showToast(
+                          msg: list.title,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 2,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+//                              height: size.height,
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text("More",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20)),
+                                  Padding(padding: EdgeInsets.only(bottom: 20)),
+                                  Wrap(
+                                    alignment: WrapAlignment.spaceEvenly,
+                                    spacing: 40,
+                                    runSpacing: 30.0,
+                                    children: listMenuSettings,
+                                  ),
+//                                  Text("Settings",
+//                                      style: TextStyle(
+//                                          fontWeight: FontWeight.bold,
+//                                          fontSize: 20)),
+//                                  Wrap(
+//                                    alignment: WrapAlignment.spaceEvenly,
+//                                    spacing: 40,
+//                                    runSpacing: 30.0,
+//                                    children: listMenuSettings,
+//                                  )
+                                ],
+                              ),
+                            );
+                          });
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 5.0)),
+          Text(list.title)
+        ],
+      ));
+    }
+
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            delegate: MySliverAppBar(expandedHeight: 250),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Padding(padding: EdgeInsets.only(bottom: 100)),
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    spacing: 40,
+                    runSpacing: 30.0,
+                    children: listMenuDashboard,
                   ),
                 ),
-              ];
-            },
-            body: Container(
-              margin: EdgeInsets.only(top: 30),
-              child: ListView(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Wrap(
-                        alignment: WrapAlignment.spaceEvenly,
-                        spacing: 40,
-                        runSpacing: 30.0,
-                        children: menuItem,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 40),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 3.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              child: Text("SUGGETION FOR YOU",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w700)),
-                            ),
-                            SizedBox(
-                              height: 175,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
-                                  itemBuilder:
-                                      (BuildContext content, int index) {
-                                    return listSuggestion();
-                                  }),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 40),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 3.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              child: Text("SUGGETION FOR YOU",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w700)),
-                            ),
-                            SizedBox(
-                              height: 175,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
-                                  itemBuilder:
-                                      (BuildContext content, int index) {
-                                    return listSuggestion();
-                                  }),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                Padding(padding: EdgeInsets.only(bottom: 40)),
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Text("SUGGESTION FOR YOU",
+                      style: TextStyle(fontWeight: FontWeight.w700)),
+                ),
+                SizedBox(
+                  height: 175,
+                  child: PageView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (BuildContext content, int index) {
+                        return listSuggestion(listItemSuggestion[index+1]);
+                      }),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 40)),
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Text("SUGGESTION FOR YOU",
+                      style: TextStyle(fontWeight: FontWeight.w700)),
+                ),
+                SizedBox(
+                  height: 175,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (BuildContext content, int index) {
+                        return listSuggestion(listItemSuggestion[index]);
+                      }),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 40)),
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Text("SUGGESTION FOR YOU",
+                      style: TextStyle(fontWeight: FontWeight.w700)),
+                ),
+                SizedBox(
+                  height: 175,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (BuildContext content, int index) {
+                        return listSuggestion(listItemSuggestion[index+3]);
+                      }),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 40))
+              ],
             ),
-          ),
-          bottomNavigationBar: makeBottom,
+          )
+        ],
+      ),
+      bottomNavigationBar: makeBottom,
+    );
+  }
+}
+
+class MySliverAppBar extends SliverPersistentHeaderDelegate {
+  final double expandedHeight;
+  final double boxHeight = 130;
+
+  Column profile = Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text("Hello", style: TextStyle(color: Colors.white)),
+      Text(
+        "Federico Julian Teddy",
+        style: TextStyle(
+            fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      Text("Rockstar", style: TextStyle(color: Colors.white))
+    ],
+  );
+
+  MySliverAppBar({@required this.expandedHeight});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Stack(
+      fit: StackFit.expand,
+      overflow: Overflow.visible,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 67, 167, 180),
+              image: DecorationImage(
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(0.2), BlendMode.dstIn),
+                  image: AssetImage("images/background.png"),
+                  fit: BoxFit.cover)),
         ),
-        new Positioned(
-          child: new Card(
-            color: Colors.transparent,
-            elevation: 0,
-            margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-            child: Container(
-              child: Row(
-                children: <Widget>[
-                  Hero(
-                      tag: "image",
-                      child: Container(
-                          width: 55.0,
-                          height: 55.0,
-                          decoration: new BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 2),
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: new NetworkImage(
-                                      "https://steamuserimages-a.akamaihd.net/ugc/940573211737440191/BDFA2022BE1D420249B31AF05D0CDC2A70597B47/"))))),
-                  Container(
-                    padding: new EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 6.0),
-                    child: title,
-                  )
-                ],
-              ),
-            ),
-          ),
-          left: 10.0,
-          right: 10.0,
-          top: size.height * 0.09,
-          bottom: size.height * 0.8,
-        ),
-        new Positioned(
-          child: new Card(
-              elevation: 8.0,
-              margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadius.circular(10)),
+        Positioned(
+          top: (expandedHeight + boxHeight) / 2 - shrinkOffset,
+          left: MediaQuery.of(context).size.width / 20,
+          right: MediaQuery.of(context).size.width / 20,
+          child: Opacity(
+            opacity: (1 - shrinkOffset / expandedHeight),
+            child: Card(
+              elevation: 10,
+              child: SizedBox(
+                height: boxHeight,
+                width: MediaQuery.of(context).size.width / 2,
                 child: new Container(
-                  padding: new EdgeInsets.all(30),
+                  margin: EdgeInsets.only(top: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -334,7 +436,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                             "120",
-                            style: TextStyle(fontSize: 35, color: Color.fromARGB(255, 67, 167, 180)),
+                            style: TextStyle(
+                                fontSize: 35,
+                                color: Color.fromARGB(255, 67, 167, 180)),
                           ),
                           Text("+2 Rank", style: TextStyle(color: Colors.grey))
                         ],
@@ -348,7 +452,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                             "120,000",
-                            style: TextStyle(fontSize: 35, color: Color.fromARGB(255, 67, 167, 180)),
+                            style: TextStyle(
+                                fontSize: 35,
+                                color: Color.fromARGB(255, 67, 167, 180)),
                           ),
                           Text("+2000 Since last week",
                               style: TextStyle(color: Colors.grey))
@@ -357,15 +463,60 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-              )),
-          left: 15.0,
-          right: 15.0,
-          top: size.height * 0.20,
-          bottom: size.height * 0.63,
-        )
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: (expandedHeight + boxHeight) / 5 - shrinkOffset,
+          left: MediaQuery.of(context).size.width / 20,
+          right: MediaQuery.of(context).size.width / 20,
+          child: Opacity(
+            opacity: (1 - shrinkOffset / expandedHeight),
+            child: Card(
+              color: Colors.transparent,
+              elevation: 0,
+              child: Container(
+                margin:
+                    new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                child: Row(
+                  children: <Widget>[
+                    Hero(
+                        tag: "image",
+                        child: Container(
+                            width: 55.0,
+                            height: 55.0,
+                            decoration: new BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: new NetworkImage(
+                                        "https://steamuserimages-a.akamaihd.net/ugc/940573211737440191/BDFA2022BE1D420249B31AF05D0CDC2A70597B47/"))))),
+                    Container(
+                      padding: new EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 6.0),
+                      child: profile,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
 //class MyHomePage extends StatefulWidget {
